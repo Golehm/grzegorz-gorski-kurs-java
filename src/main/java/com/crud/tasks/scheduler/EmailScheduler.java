@@ -26,9 +26,10 @@ public class EmailScheduler {
     //@Scheduled(fixedDelay = 10000)
     public void sendInformationEmail() {
         long size = taskRepository.count();
-        String end = "";
-        if(size > 1) end = "s";
         simpleEmailService.send(new Mail(adminConfig.getAdminMail(), SUBJECT,
-                "Currently in database you got: " + size + "task" + end));
+                "Currently in database you got: " + size + "task" + endWithS(size)));
+    }
+    private String endWithS (long size) {
+        return size > 1 ? "s" : "" ;
     }
 }
