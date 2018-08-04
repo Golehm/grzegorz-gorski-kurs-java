@@ -27,4 +27,4 @@
 /.nb-gradle/
 
 ### My exclusions
-application.properties
+#application.properties
