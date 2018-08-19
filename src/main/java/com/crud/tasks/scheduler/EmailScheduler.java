@@ -5,8 +5,13 @@ import com.crud.tasks.domain.Mail;
 import com.crud.tasks.repository.TaskRepository;
 import com.crud.tasks.service.SimpleEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.mail.MailException;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 @Component
 public class EmailScheduler {
@@ -22,8 +27,6 @@ public class EmailScheduler {
     @Autowired
     private AdminConfig adminConfig;
 
-    @Scheduled(cron = "0 0 10 * * *")
-    //@Scheduled(fixedDelay = 10000)
     public void sendInformationEmail() {
         long size = taskRepository.count();
         simpleEmailService.send(new Mail(adminConfig.getAdminMail(), SUBJECT,
@@ -31,5 +34,10 @@ public class EmailScheduler {
     }
     private String endWithS (long size) {
         return size > 1 ? "s" : "" ;
+    }
+    @Scheduled(cron = "0 0 7 * * *")
+    //@Scheduled(fixedDelay = 10000) //for tests
+    public void sendCountDaily() {
+        simpleEmailService.send(new Mail(adminConfig.getAdminMail(), SUBJECT, ""));
     }
 }
